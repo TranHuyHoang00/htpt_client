@@ -9,6 +9,8 @@ import { RoutesDepartment } from "@/features/admin/views/department";
 import { RoutesMajor } from "@/features/admin/views/major";
 import { RoutesTeacher } from "@/features/admin/views/teacher";
 import { RoutesSubject } from "@/features/admin/views/subject";
+import { AmzResult } from "@/components/Elements/AmzResult";
+import { SmileOutlined } from "@ant-design/icons";
 const AppAdminProtected = () => {
   const isLogin = Auth.isLogin();
   return isLogin ? (
@@ -24,7 +26,18 @@ export const RoutesProtectedAdmin = [
     path: "admin/*",
     element: <AppAdminProtected />,
     children: [
-      { path: "", element: <div>EMPTY</div> },
+      {
+        path: "",
+        element: (
+          <div>
+            {" "}
+            <AmzResult
+              icon={<SmileOutlined />}
+              title="Chào mừng đến với trang quản lý !"
+            />
+          </div>
+        ),
+      },
       { path: "student/*", element: <RoutesStudent /> },
       { path: "class/*", element: <RoutesClass /> },
       { path: "department/*", element: <RoutesDepartment /> },

@@ -7,8 +7,17 @@ import { AmzTable } from "@/components/Elements/AmzTable";
 import { AmzButton } from "@/components/Elements/AmzButton";
 import { AmzSearch } from "@/components/Elements/AmzInput/AmzSearch";
 import { AmzTitle } from "@/components/Elements/AmzTitle";
+import { ModalCRUD } from "./modal/ModalCRUD";
 export const Subject = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [typeModal, setTypeModal] = useState("none");
+  const [subjectId, setDepartmentId] = useState<number>(0);
+
+  const handleOpenModal = (type: string, subjectId: number) => {
+    setIsOpenModal(true);
+    setTypeModal(type);
+    setDepartmentId(subjectId);
+  };
   const dataSubjects = [
     {
       mamh: "TRR1",
@@ -39,10 +48,10 @@ export const Subject = () => {
       width: 80,
       render: (_, item) => (
         <Space size="small">
-          <button onClick={() => setIsOpenModal(true)}>
+          <button onClick={() => handleOpenModal("detail", item.makhoa)}>
             <AiFillEye />
           </button>
-          <button onClick={() => setIsOpenModal(true)}>
+          <button onClick={() => handleOpenModal("update", item.makhoa)}>
             <AiFillEdit />
           </button>
           <Popconfirm
@@ -68,7 +77,7 @@ export const Subject = () => {
         <AmzButton
           type="primary"
           size="large"
-          onClick={() => setIsOpenModal(true)}
+          onClick={() => handleOpenModal("create", 0)}
         >
           <PlusOutlined />
           Thêm mới
@@ -87,6 +96,15 @@ export const Subject = () => {
         size="large"
         dataSource={dataSubjects}
       />
+      {isOpenModal && (
+        <ModalCRUD
+          open={isOpenModal}
+          onCancel={setIsOpenModal}
+          width={600}
+          typeModal={typeModal}
+          subjectId={subjectId}
+        />
+      )}
     </>
   );
 };

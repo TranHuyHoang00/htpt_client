@@ -7,8 +7,16 @@ import { AmzTable } from "@/components/Elements/AmzTable";
 import { AmzButton } from "@/components/Elements/AmzButton";
 import { AmzSearch } from "@/components/Elements/AmzInput/AmzSearch";
 import { AmzTitle } from "@/components/Elements/AmzTitle";
+import { ModalCRUD } from "./modal/ModalCRUD";
 export const Teacher = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [typeModal, setTypeModal] = useState("none");
+  const [teacherId, setDepartmentId] = useState<number>(0);
+  const handleOpenModal = (type: string, teacherId: number) => {
+    setIsOpenModal(true);
+    setTypeModal(type);
+    setDepartmentId(teacherId);
+  };
   const dataTeachers = [
     {
       magv: "N19DCCN065",
@@ -54,10 +62,10 @@ export const Teacher = () => {
       width: 80,
       render: (_, item) => (
         <Space size="small">
-          <button onClick={() => setIsOpenModal(true)}>
+          <button onClick={() => handleOpenModal("detail", item.makhoa)}>
             <AiFillEye />
           </button>
-          <button onClick={() => setIsOpenModal(true)}>
+          <button onClick={() => handleOpenModal("update", item.makhoa)}>
             <AiFillEdit />
           </button>
           <Popconfirm
@@ -83,7 +91,7 @@ export const Teacher = () => {
         <AmzButton
           type="primary"
           size="large"
-          onClick={() => setIsOpenModal(true)}
+          onClick={() => handleOpenModal("create", 0)}
         >
           <PlusOutlined />
           Thêm mới
@@ -102,6 +110,15 @@ export const Teacher = () => {
         size="large"
         dataSource={dataTeachers}
       />
+      {isOpenModal && (
+        <ModalCRUD
+          open={isOpenModal}
+          onCancel={setIsOpenModal}
+          width={600}
+          typeModal={typeModal}
+          teacherId={teacherId}
+        />
+      )}
     </>
   );
 };
